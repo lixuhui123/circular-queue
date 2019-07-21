@@ -13,8 +13,9 @@ void dequeueIEmpty(Dequeue * qu)
 }
 int dequeuePush(Dequeue * qu, DataType X)
 {
+	//入队列，从对尾入从队头出
 	//在循环队列中，尾巴上留一个不存数据的空间来检测队列是否已满
-    //环形队列当中出队从对头出入队从队尾入
+    //环形队列当中出队从队头出入队从队尾入
 	*qu->_tail = X;
 	if (qu->_tail + 1 == qu->_head || (qu->_tail + 1 - qu->_data == QUEUENUM && qu->_head == qu->_tail))
 	{
@@ -31,6 +32,7 @@ int dequeuePush(Dequeue * qu, DataType X)
 }
 void dequeuePop(Dequeue * qu)
 {
+	//从这个做法中可以发现，环形队列就是在队全部列满的时候让队首和队尾指针全部指向头指针
 	//出队列，头指针后移
 	qu->_head++;
 	if (qu->_head - qu->_data == QUEUENUM-1)
@@ -38,7 +40,7 @@ void dequeuePop(Dequeue * qu)
 		qu->_head = qu->_data;
 	}
 	qu->_size--;
-}
+}						
 DataType DequeueFront(Dequeue * qu)
 {
 	 return *qu->_head;
