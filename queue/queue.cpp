@@ -72,7 +72,7 @@ void dequeInit(deque * qu)
 
 void dequeEmpty(deque * qu)
 {
-	//对列清空
+	//队列清空
 	//将对列收尾指针相等，因为清空之后会初始化将他们都指向数组头
 	qu->_head = qu->_tail;
 	qu->_size = 0;
@@ -80,22 +80,24 @@ void dequeEmpty(deque * qu)
 
 int dequePush(deque * qu, DataType x)
 {
-	//入队列
+	//入队列，先判断队列是否已满，然后尾指针后移
 	
-	if ( (qu->_tail + 1 - qu->_data == QUEUENUM && qu->_head == qu->_data))
+	if ( qu->_tail+1==qu->_head||(qu->_tail + 1 - qu->_data == QUEUENUM && qu->_head == qu->_data))
 		//入队列首先要判断队列是否已满，从队尾入。
-		//我们一般将队列的最后一个元素空下来用来判断对列是否已满，
+		//我们一般将队列的最后一个元素空下来用来判断对列是否已满，因为当头和尾相等时
+		//不能判断是空还是已满
 	{
 		printf("队列已满不能插入\n");
 		return -1;
 	}
 	*qu->_tail = x;
 	qu->_tail++;
-	/*if (qu->_tail - qu->_data == QUEUENUM)
+	 
+	if (qu->_tail - qu->_data == QUEUENUM)
 	{
-
+		//来成环
 		qu->_tail = qu->_data;
-	}*/
+	}
 	qu->_size++;
 	return 0;
 }
@@ -111,7 +113,8 @@ int dequePop(deque * qu)
 	if (qu->_head - qu->_data == QUEUENUM)
 	{
 		//此种情况是当上一次出队头指针已将指到倒数第一个元素时紧接着再出队时，头指针
-		//就会指向设计程序时空着的最后一个元素，此时应该讲头指针重新指向首元素首地址。
+		//就会指向设计程序时空着的最后一个元素，此时应该将头指针重新指向首元素首地址。
+		//来成环
 		qu->_head = qu->_data;
 	}
 	qu->_size--;
@@ -130,6 +133,7 @@ DataType dequeBack(deque * qu)
 	{
 		return qu->_data[QUEUENUM - 1];
 	}
+	//因为入队后有_tail++,但是实际并没有赋值
 	return qu->_tail[-1];
 }
 
@@ -143,3 +147,8 @@ size_t dequeSize(deque * qu)
 {
 	return qu->_size;
 }
+
+
+//找左孩子*2右孩子*2+1 2（n+1）-1 ，2（n+1）+1-1,父亲：(n-1)/2,是否为叶子（n+1）/2
+//非叶子(n-1)/2
+//后序左右根

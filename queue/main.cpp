@@ -33,6 +33,7 @@ int main()
 	printf("%d\n", dequeFront(&test));
 	dequePop(&test);
 	printf("%d\n", dequeFront(&test));
+	printf("%d\n", dequeBack(&test));
 	system("pause");
 	return 0;
 }
